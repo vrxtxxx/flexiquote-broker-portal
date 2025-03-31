@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,15 +53,16 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
+				// Custom insurance theme colors
+				insurance: {
+					yellow: '#FFD600',
+					'yellow-light': '#FFF0A0',
+					'yellow-dark': '#FFBB00',
+					black: '#000000',
+					'black-light': '#333333',
+					white: '#FFFFFF',
+					'gray-light': '#F8F8F8',
+					'gray-medium': '#DDDDDD',
 				}
 			},
 			borderRadius: {
