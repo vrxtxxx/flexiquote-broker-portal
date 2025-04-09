@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
-import { Home, List, PlusCircle, LogOut } from 'lucide-react';
+import { Home, List, PlusCircle, LogIn } from 'lucide-react';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,14 +34,16 @@ export default function Header() {
               <PlusCircle className="h-4 w-4 mr-1" />
               <span>New Quote</span>
             </Link>
-            <Button 
-              variant="outline" 
-              size="sm"
-              className="border-insurance-gray-medium text-insurance-black-light hover:bg-insurance-gray-light"
-            >
-              <LogOut className="h-4 w-4 mr-1" />
-              Logout
-            </Button>
+            <Link to="/login">
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="border-insurance-gray-medium text-insurance-black-light hover:bg-insurance-gray-light"
+              >
+                <LogIn className="h-4 w-4 mr-1" />
+                Login
+              </Button>
+            </Link>
           </div>
           
           {/* Mobile menu button */}
@@ -89,14 +91,14 @@ export default function Header() {
                 <PlusCircle className="h-5 w-5 mr-2" />
                 <span>New Quote</span>
               </Link>
-              <Button 
-                variant="outline" 
-                className="flex items-center justify-start px-2 py-2 border-insurance-gray-medium text-insurance-black-light hover:bg-insurance-gray-light rounded-md"
+              <Link 
+                to="/login" 
+                className="flex items-center px-2 py-2 text-insurance-black-light hover:bg-insurance-gray-light rounded-md"
                 onClick={() => setIsOpen(false)}
               >
-                <LogOut className="h-5 w-5 mr-2" />
-                <span>Logout</span>
-              </Button>
+                <LogIn className="h-5 w-5 mr-2" />
+                <span>Login</span>
+              </Link>
             </nav>
           </div>
         )}

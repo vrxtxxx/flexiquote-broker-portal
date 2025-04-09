@@ -60,8 +60,8 @@ const HeroSection = () => {
                 <ArrowRight className="ml-1 transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
             </Link>
-            <Link to="/quotes" className="text-sm font-semibold leading-6 text-insurance-black-light hover:text-insurance-black">
-              View All Quotes <span aria-hidden="true">→</span>
+            <Link to="/login" className="text-sm font-semibold leading-6 text-insurance-black-light hover:text-insurance-black">
+              Login <span aria-hidden="true">→</span>
             </Link>
           </motion.div>
         </div>
