@@ -65,23 +65,6 @@ const HeroSection = () => {
             </Link>
           </motion.div>
         </div>
-
-        <motion.div
-          className="mt-16 flow-root sm:mt-24"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          <div className="-m-2 rounded-xl bg-insurance-gray-light p-2 ring-1 ring-inset ring-insurance-gray-medium lg:-m-4 lg:rounded-2xl lg:p-4">
-            <img
-              src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-              alt="Insurance dashboard preview"
-              width={2432}
-              height={1442}
-              className="rounded-md shadow-2xl ring-1 ring-insurance-gray-medium"
-            />
-          </div>
-        </motion.div>
       </div>
     </div>
   );
