@@ -1,8 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -128,19 +126,38 @@ export default function QuoteForm() {
       
       const broker_id = userData.user.id;
       
-      // Calculate premium
+      // Calculate premium using adapter for the ratingCalculator
       const calculatedPremium = calculatePremium({
         policyDetails: {
           coverageAmount: data.sum_insured,
           deductible: 500, // Default deductible
-          policyType: data.insurance_type
+          policyType: data.insurance_type,
+          startDate: data.policy_start_date,
+          endDate: data.policy_end_date,
+          additionalCoverages: []
         },
         propertyDetails: {
           yearBuilt: data.year_of_construction,
           constructionType: data.construction_type,
-          propertyType: data.property_type
+          propertyType: data.property_type,
+          squareFootage: data.total_square_area,
+          numberOfStories: data.number_of_floors,
+          roofType: 'Standard', // Default
+          securityFeatures: data.security_features,
+          address: {
+            street: data.residential_address,
+            city: '',
+            state: '',
+            zipCode: '',
+            country: ''
+          }
         },
         customerDetails: {
+          firstName: data.full_name.split(' ')[0] || '',
+          lastName: data.full_name.split(' ').slice(1).join(' ') || '',
+          email: data.email,
+          phone: data.phone || '',
+          dateOfBirth: data.date_of_birth || '',
           previousClaims: 0, // Default
           creditScore: 700 // Default
         }
@@ -205,14 +222,33 @@ export default function QuoteForm() {
         policyDetails: {
           coverageAmount: formData.sum_insured,
           deductible: 500, // Default
-          policyType: formData.insurance_type
+          policyType: formData.insurance_type,
+          startDate: formData.policy_start_date,
+          endDate: formData.policy_end_date,
+          additionalCoverages: []
         },
         propertyDetails: {
           yearBuilt: formData.year_of_construction,
           constructionType: formData.construction_type,
-          propertyType: formData.property_type
+          propertyType: formData.property_type,
+          squareFootage: formData.total_square_area,
+          numberOfStories: formData.number_of_floors,
+          roofType: 'Standard', // Default
+          securityFeatures: formData.security_features,
+          address: {
+            street: formData.residential_address,
+            city: '',
+            state: '',
+            zipCode: '',
+            country: ''
+          }
         },
         customerDetails: {
+          firstName: formData.full_name.split(' ')[0] || '',
+          lastName: formData.full_name.split(' ').slice(1).join(' ') || '',
+          email: formData.email,
+          phone: formData.phone || '',
+          dateOfBirth: formData.date_of_birth || '',
           previousClaims: 0, // Default
           creditScore: 700 // Default
         }
