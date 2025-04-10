@@ -1,6 +1,8 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import {
   Table,
   TableBody,
@@ -26,56 +28,105 @@ import {
   SelectValue
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Quote } from '@/types';
-import mockQuotes from '@/data/mockQuotes';
 import { Eye, Pencil, MoreHorizontal, Trash2, FileCheck } from 'lucide-react';
 
 export default function QuoteList() {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [quotes, setQuotes] = useState<Quote[]>(mockQuotes);
+  const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [sortBy, setSortBy] = useState('createdAt');
+  const [sortBy, setSortBy] = useState('created_at');
   const [sortOrder, setSortOrder] = useState('desc');
 
-  // Filter and sort quotes
-  const filteredAndSortedQuotes = quotes
-    .filter(quote => {
-      // Filter by status
-      if (statusFilter !== 'all' && quote.status !== statusFilter) {
-        return false;
-      }
+  // Fetch quotes
+  const { data: quotes = [], isLoading, error } = useQuery({
+    queryKey: ['quotes'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('quotes')
+        .select('*')
+        .order(sortBy, { ascending: sortOrder === 'asc' });
       
-      // Filter by search term
+      if (error) throw error;
+      return data || [];
+    }
+  });
+
+  // Delete quote mutation
+  const deleteMutation = useMutation({
+    mutationFn: async (quoteId: string) => {
+      const { error } = await supabase
+        .from('quotes')
+        .delete()
+        .eq('id', quoteId);
+      
+      if (error) throw error;
+      return quoteId;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['quotes'] });
+      toast({
+        title: "Quote Deleted",
+        description: "The quote has been successfully removed."
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: `Failed to delete quote: ${error.message}`,
+        variant: "destructive"
+      });
+    }
+  });
+
+  // Update quote status mutation
+  const updateStatusMutation = useMutation({
+    mutationFn: async ({ quoteId, status }: { quoteId: string, status: string }) => {
+      const { error } = await supabase
+        .from('quotes')
+        .update({ status })
+        .eq('id', quoteId);
+      
+      if (error) throw error;
+      return { quoteId, status };
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['quotes'] });
+      toast({
+        title: "Status Updated",
+        description: `The quote has been ${data.status === 'bound' ? 'bound to a policy' : 'updated'}.`
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: `Failed to update quote status: ${error.message}`,
+        variant: "destructive"
+      });
+    }
+  });
+
+  // Filter and sort quotes
+  const filteredQuotes = quotes.filter(quote => {
+    // Filter by status
+    if (statusFilter !== 'all' && quote.status !== statusFilter) {
+      return false;
+    }
+    
+    // Filter by search term
+    if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
       return (
-        searchTerm === '' ||
-        quote.customerDetails.firstName.toLowerCase().includes(searchLower) ||
-        quote.customerDetails.lastName.toLowerCase().includes(searchLower) ||
-        quote.customerDetails.email.toLowerCase().includes(searchLower) ||
-        quote.propertyDetails.address.street.toLowerCase().includes(searchLower) ||
-        quote.propertyDetails.address.city.toLowerCase().includes(searchLower) ||
-        quote.propertyDetails.address.zipCode.includes(searchLower)
+        quote.full_name?.toLowerCase().includes(searchLower) ||
+        quote.email?.toLowerCase().includes(searchLower) ||
+        quote.residential_address?.toLowerCase().includes(searchLower) ||
+        quote.id?.toLowerCase().includes(searchLower)
       );
-    })
-    .sort((a, b) => {
-      let comparison = 0;
-      
-      // Sort by selected field
-      if (sortBy === 'premium') {
-        comparison = a.premium - b.premium;
-      } else if (sortBy === 'customerName') {
-        const nameA = `${a.customerDetails.lastName}, ${a.customerDetails.firstName}`;
-        const nameB = `${b.customerDetails.lastName}, ${b.customerDetails.firstName}`;
-        comparison = nameA.localeCompare(nameB);
-      } else if (sortBy === 'createdAt') {
-        comparison = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-      }
-      
-      // Apply sort order
-      return sortOrder === 'asc' ? comparison : -comparison;
-    });
+    }
+    
+    return true;
+  });
 
   const handleViewQuote = (quoteId: string) => {
     navigate(`/quotes/${quoteId}`);
@@ -86,31 +137,16 @@ export default function QuoteList() {
   };
 
   const handleDeleteQuote = (quoteId: string) => {
-    // In a real application, we would call an API to delete the quote
-    setQuotes(quotes.filter(quote => quote.id !== quoteId));
-    toast({
-      title: "Quote Deleted",
-      description: "The quote has been successfully removed."
-    });
+    if (confirm("Are you sure you want to delete this quote?")) {
+      deleteMutation.mutate(quoteId);
+    }
   };
 
   const handleBindQuote = (quoteId: string) => {
-    // Update quote status to 'bound'
-    const updatedQuotes = quotes.map(quote => 
-      quote.id === quoteId
-        ? { ...quote, status: 'bound' as const }
-        : quote
-    );
-    
-    setQuotes(updatedQuotes);
-    
-    toast({
-      title: "Quote Bound",
-      description: "The quote has been successfully bound to a policy."
-    });
+    updateStatusMutation.mutate({ quoteId, status: 'bound' });
   };
 
-  const getStatusBadgeClass = (status: Quote['status']) => {
+  const getStatusBadgeClass = (status: string) => {
     switch (status) {
       case 'draft':
         return 'bg-gray-200 text-gray-800';
@@ -129,6 +165,7 @@ export default function QuoteList() {
 
   // Format date for display
   const formatDate = (dateString: string) => {
+    if (!dateString) return '';
     const date = new Date(dateString);
     return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
@@ -136,6 +173,14 @@ export default function QuoteList() {
       day: 'numeric'
     }).format(date);
   };
+
+  if (isLoading) {
+    return <div className="p-8 text-center">Loading quotes...</div>;
+  }
+
+  if (error) {
+    return <div className="p-8 text-center text-red-500">Error loading quotes: {(error as Error).message}</div>;
+  }
 
   return (
     <div className="insurance-container">
@@ -176,9 +221,9 @@ export default function QuoteList() {
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="createdAt">Date Created</SelectItem>
+                  <SelectItem value="created_at">Date Created</SelectItem>
                   <SelectItem value="premium">Premium</SelectItem>
-                  <SelectItem value="customerName">Customer Name</SelectItem>
+                  <SelectItem value="full_name">Customer Name</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -199,7 +244,7 @@ export default function QuoteList() {
         
         <div className="flex justify-between mt-4">
           <p className="text-sm text-gray-500">
-            Showing {filteredAndSortedQuotes.length} of {quotes.length} quotes
+            Showing {filteredQuotes.length} of {quotes.length} quotes
           </p>
           <Button 
             className="bg-insurance-yellow hover:bg-insurance-yellow-dark text-black"
@@ -226,22 +271,19 @@ export default function QuoteList() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredAndSortedQuotes.length > 0 ? (
-                filteredAndSortedQuotes.map((quote) => (
+              {filteredQuotes.length > 0 ? (
+                filteredQuotes.map((quote) => (
                   <TableRow key={quote.id} className="hover:bg-insurance-gray-light">
-                    <TableCell className="font-medium">{quote.id}</TableCell>
+                    <TableCell className="font-medium">{quote.id.slice(0, 8)}</TableCell>
                     <TableCell>
-                      {quote.customerDetails.firstName} {quote.customerDetails.lastName}
-                      <div className="text-xs text-gray-500">{quote.customerDetails.email}</div>
+                      {quote.full_name}
+                      <div className="text-xs text-gray-500">{quote.email}</div>
                     </TableCell>
                     <TableCell>
-                      <div>{quote.propertyDetails.address.street}</div>
-                      <div className="text-xs text-gray-500">
-                        {quote.propertyDetails.address.city}, {quote.propertyDetails.address.state} {quote.propertyDetails.address.zipCode}
-                      </div>
+                      <div className="max-w-xs truncate">{quote.residential_address}</div>
                     </TableCell>
-                    <TableCell className="font-medium">${quote.premium.toFixed(2)}</TableCell>
-                    <TableCell>{formatDate(quote.createdAt)}</TableCell>
+                    <TableCell className="font-medium">${Number(quote.premium).toFixed(2)}</TableCell>
+                    <TableCell>{formatDate(quote.created_at)}</TableCell>
                     <TableCell>
                       <span className={`inline-block px-2 py-1 rounded-full text-xs ${getStatusBadgeClass(quote.status)}`}>
                         {quote.status.charAt(0).toUpperCase() + quote.status.slice(1)}

@@ -9,7 +9,141 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      brokers: {
+        Row: {
+          company: string | null
+          created_at: string
+          email: string
+          first_name: string | null
+          id: string
+          last_name: string | null
+          phone: string | null
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          email: string
+          first_name?: string | null
+          id: string
+          last_name?: string | null
+          phone?: string | null
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          email?: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          phone?: string | null
+        }
+        Relationships: []
+      }
+      quotes: {
+        Row: {
+          automatic_renewal: boolean
+          broker_id: string
+          construction_type: string | null
+          created_at: string
+          date_of_birth: string | null
+          email: string
+          fire_safety_measures: string[] | null
+          fire_safety_other: string | null
+          full_name: string
+          high_value_items: boolean | null
+          id: string
+          insurance_type: string
+          is_occupied_full_time: boolean
+          nearby_fire_station: boolean | null
+          number_of_bathrooms: number | null
+          number_of_floors: number | null
+          number_of_rooms: number | null
+          phone: string | null
+          policy_duration: string
+          policy_end_date: string
+          policy_start_date: string
+          premium: number | null
+          property_type: string | null
+          renewal_type: string
+          residential_address: string
+          security_features: string[] | null
+          security_features_other: string | null
+          status: string
+          sum_insured: number
+          total_square_area: number | null
+          updated_at: string
+          year_of_construction: number | null
+        }
+        Insert: {
+          automatic_renewal?: boolean
+          broker_id: string
+          construction_type?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          email: string
+          fire_safety_measures?: string[] | null
+          fire_safety_other?: string | null
+          full_name: string
+          high_value_items?: boolean | null
+          id?: string
+          insurance_type: string
+          is_occupied_full_time?: boolean
+          nearby_fire_station?: boolean | null
+          number_of_bathrooms?: number | null
+          number_of_floors?: number | null
+          number_of_rooms?: number | null
+          phone?: string | null
+          policy_duration: string
+          policy_end_date: string
+          policy_start_date: string
+          premium?: number | null
+          property_type?: string | null
+          renewal_type: string
+          residential_address: string
+          security_features?: string[] | null
+          security_features_other?: string | null
+          status?: string
+          sum_insured: number
+          total_square_area?: number | null
+          updated_at?: string
+          year_of_construction?: number | null
+        }
+        Update: {
+          automatic_renewal?: boolean
+          broker_id?: string
+          construction_type?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          email?: string
+          fire_safety_measures?: string[] | null
+          fire_safety_other?: string | null
+          full_name?: string
+          high_value_items?: boolean | null
+          id?: string
+          insurance_type?: string
+          is_occupied_full_time?: boolean
+          nearby_fire_station?: boolean | null
+          number_of_bathrooms?: number | null
+          number_of_floors?: number | null
+          number_of_rooms?: number | null
+          phone?: string | null
+          policy_duration?: string
+          policy_end_date?: string
+          policy_start_date?: string
+          premium?: number | null
+          property_type?: string | null
+          renewal_type?: string
+          residential_address?: string
+          security_features?: string[] | null
+          security_features_other?: string | null
+          status?: string
+          sum_insured?: number
+          total_square_area?: number | null
+          updated_at?: string
+          year_of_construction?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
