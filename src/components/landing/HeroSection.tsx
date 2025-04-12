@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 
@@ -41,10 +41,10 @@ const HeroSection = () => {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-4xl font-bold tracking-tight text-insurance-black sm:text-6xl">
-              Insurance Made <span className="text-insurance-yellow-dark">Simple</span>
+              Broker <span className="text-insurance-yellow-dark">Portal</span>
             </h1>
             <p className="mt-6 text-lg leading-8 text-insurance-black-light">
-              FlexiQuote helps insurance brokers create, manage, and track domestic fire and burglary policy quotes with ease.
+              Streamline your quote management with FlexiQuote's comprehensive broker portal for domestic fire and burglary policies.
             </p>
           </motion.div>
 
@@ -54,14 +54,14 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <Link to="/quotes/new">
+            <Link to="/login">
               <Button size="lg" className="group bg-insurance-black text-white hover:bg-insurance-black-light">
-                Create a Quote
-                <ArrowRight className="ml-1 transition-transform duration-300 group-hover:translate-x-1" />
+                Broker Login
+                <LogIn className="ml-1 transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
             </Link>
-            <Link to="/login" className="text-sm font-semibold leading-6 text-insurance-black-light hover:text-insurance-black">
-              Login <span aria-hidden="true">→</span>
+            <Link to="/quotes" className="text-sm font-semibold leading-6 text-insurance-black-light hover:text-insurance-black">
+              View Quote List <span aria-hidden="true">→</span>
             </Link>
           </motion.div>
         </div>

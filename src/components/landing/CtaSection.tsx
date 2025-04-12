@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 
@@ -22,7 +22,7 @@ const CtaSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Ready to streamline your quoting process?
+            Ready to manage your client quotes?
           </motion.h2>
           <motion.p
             className="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-300"
@@ -31,7 +31,7 @@ const CtaSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            Start creating professional insurance quotes in minutes with our intuitive platform designed for brokers like you.
+            Access your broker portal now to create and manage domestic fire and burglary policy quotes for your clients.
           </motion.p>
           <motion.div
             className="mt-10 flex items-center justify-center gap-x-6"
@@ -40,17 +40,17 @@ const CtaSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <Link to="/quotes/new">
+            <Link to="/login">
               <Button size="lg" className="group bg-insurance-yellow text-insurance-black hover:bg-insurance-yellow-dark">
-                Start Creating Quotes
-                <ArrowRight className="ml-1 transition-transform duration-300 group-hover:translate-x-1" />
+                Broker Login
+                <LogIn className="ml-1 transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
             </Link>
             <Link
               to="/quotes"
               className="text-sm font-semibold leading-6 text-white hover:text-insurance-yellow"
             >
-              View Your Quotes <span aria-hidden="true">→</span>
+              View Quote List <span aria-hidden="true">→</span>
             </Link>
           </motion.div>
           
