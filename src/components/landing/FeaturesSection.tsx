@@ -1,27 +1,27 @@
 
 import { motion } from "framer-motion";
-import { ClipboardList, Clock, Edit, FileText, BarChart, Users } from "lucide-react";
+import { Shield, Clock, Percent, FileText } from "lucide-react";
 
 const features = [
   {
-    name: 'Streamlined Quote Creation',
-    description: 'Create quotes for your clients with our intuitive broker interface that calculates premiums in real-time.',
-    icon: Edit,
+    name: 'Comprehensive Coverage',
+    description: 'Tailored protection for home and contents with our domestic fire and burglary policies.',
+    icon: Shield,
   },
   {
-    name: 'Quote Management',
-    description: 'Easily track, organize, and update all your client quotes in one central location.',
-    icon: ClipboardList,
+    name: 'Quick Quotes',
+    description: 'Generate accurate quotes in minutes with our advanced rating calculator.',
+    icon: Clock,
   },
   {
-    name: 'Premium Calculation',
-    description: 'Accurate premium calculations with our advanced rating engine for domestic fire and burglary policies.',
-    icon: BarChart,
+    name: 'Competitive Rates',
+    description: 'Access market-leading rates and premium discounts for your clients.',
+    icon: Percent,
   },
   {
-    name: 'Client Management',
-    description: 'Maintain your client database and quickly create quotes for new and existing customers.',
-    icon: Users,
+    name: 'Easy Documentation',
+    description: 'Generate and manage policy documents seamlessly within the platform.',
+    icon: FileText,
   },
 ];
 
@@ -52,7 +52,7 @@ const FeaturesSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            Broker-Focused Platform
+            Why Choose FlexiQuote
           </motion.h2>
           <motion.p
             className="mt-2 text-3xl font-bold tracking-tight text-insurance-black sm:text-4xl"
@@ -61,7 +61,7 @@ const FeaturesSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Built for Insurance Professionals
+            Everything you need to manage insurance quotes
           </motion.p>
           <motion.p
             className="mt-6 text-lg leading-8 text-insurance-black-light"
@@ -70,7 +70,7 @@ const FeaturesSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Our platform provides brokers with the tools needed to efficiently create and manage domestic fire and burglary insurance quotes for their clients.
+            Our platform streamlines the quoting process for insurance brokers, saving time and improving accuracy.
           </motion.p>
         </div>
         

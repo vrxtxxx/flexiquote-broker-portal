@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import { Clock, Shield, PieChart, Users } from "lucide-react";
 
 const stats = [
-  { id: 1, name: 'Broker Quotes Generated', value: '10,000+', icon: PieChart },
-  { id: 2, name: 'Broker Time Saved', value: '75%', icon: Clock },
-  { id: 3, name: 'Policy Types', value: '2', icon: Shield },
-  { id: 4, name: 'Active Brokers', value: '500+', icon: Users },
+  { id: 1, name: 'Quotes Generated', value: '10,000+', icon: PieChart },
+  { id: 2, name: 'Time Saved', value: '75%', icon: Clock },
+  { id: 3, name: 'Coverage Options', value: '50+', icon: Shield },
+  { id: 4, name: 'Happy Brokers', value: '2,500+', icon: Users },
 ];
 
 const StatsSection = () => {
@@ -36,10 +36,10 @@ const StatsSection = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Trusted by insurance brokers
+            Trusted by insurance professionals
           </h2>
           <p className="mt-6 text-lg leading-8 text-gray-300">
-            Our platform is built specifically for insurance brokers managing domestic fire and burglary policies.
+            Our platform is designed by insurance experts to meet the specific needs of modern insurance brokers.
           </p>
         </motion.div>
         
