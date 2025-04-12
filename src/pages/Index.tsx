@@ -1,11 +1,7 @@
 
 import { useEffect } from 'react';
 import Layout from '../components/layout/Layout';
-import HeroSection from '../components/landing/HeroSection';
-import FeaturesSection from '../components/landing/FeaturesSection';
-import TestimonialsSection from '../components/landing/TestimonialsSection';
-import StatsSection from '../components/landing/StatsSection';
-import CtaSection from '../components/landing/CtaSection';
+import BrokerDashboard from '../components/dashboard/BrokerDashboard';
 
 const Index = () => {
   // Add logging to debug rendering
@@ -16,11 +12,7 @@ const Index = () => {
   return (
     <Layout>
       <div className="animate-fade-in">
-        <HeroSection />
-        <FeaturesSection />
-        <StatsSection />
-        <TestimonialsSection />
-        <CtaSection />
+        <BrokerDashboard />
       </div>
     </Layout>
   );
