@@ -1,12 +1,97 @@
 
+import { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import { motion } from "framer-motion";
-import { PlusCircle, FileText, ClipboardList, Users, Settings, Activity, BarChart } from "lucide-react";
-import { Link } from "react-router-dom";
+import { PlusCircle, FileText, ClipboardList, Users, Settings, Activity, BarChart, LogIn } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const checkSession = async () => {
+      setIsLoading(true);
+      const { data, error } = await supabase.auth.getSession();
+      
+      if (error) {
+        console.error('Error checking auth session:', error);
+        setIsLoggedIn(false);
+      } else {
+        setIsLoggedIn(!!data.session);
+      }
+      
+      setIsLoading(false);
+    };
+    
+    checkSession();
+
+    // Listen for auth changes
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      setIsLoggedIn(!!session);
+    });
+
+    // Cleanup
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
+  }, []);
+
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="flex justify-center items-center min-h-[60vh]">
+          <div className="animate-spin h-8 w-8 border-4 border-insurance-yellow border-t-transparent rounded-full"></div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // If not logged in, show login prompt
+  if (!isLoggedIn) {
+    return (
+      <Layout>
+        <div className="bg-white py-16 px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <h1 className="text-4xl font-bold tracking-tight text-insurance-black sm:text-5xl md:text-6xl">
+                Insurance <span className="text-insurance-yellow-dark">Broker Portal</span>
+              </h1>
+              <p className="mt-6 text-xl text-insurance-black-light max-w-2xl mx-auto">
+                Manage quotes, policies, and customers all in one place. Please log in to access your broker dashboard.
+              </p>
+              <div className="mt-10">
+                <Button 
+                  onClick={handleLoginClick} 
+                  size="lg"
+                  className="bg-insurance-black hover:bg-insurance-black-light"
+                >
+                  <LogIn className="mr-2 h-5 w-5" />
+                  Log In to Dashboard
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // If logged in, show the broker dashboard
   return (
     <Layout>
       <div className="bg-white py-8 px-4 sm:px-6 lg:px-8">
