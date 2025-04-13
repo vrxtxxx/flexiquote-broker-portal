@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -20,25 +21,30 @@ const LoginPage = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate login
-    setTimeout(() => {
-      setIsLoading(false);
-      if (email && password) {
-        // Success login simulation
-        toast({
-          title: "Login successful",
-          description: "Welcome back!",
-        });
-        navigate('/');
-      } else {
-        // Failed login simulation
-        toast({
-          title: "Login failed",
-          description: "Please check your credentials and try again.",
-          variant: "destructive",
-        });
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        throw error;
       }
-    }, 1000);
+
+      toast({
+        title: "Login successful",
+        description: "Welcome back!",
+      });
+      navigate('/');
+    } catch (error: any) {
+      toast({
+        title: "Login failed",
+        description: error.message || "Please check your credentials and try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
