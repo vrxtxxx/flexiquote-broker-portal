@@ -9,6 +9,7 @@ import LoginPage from "./pages/LoginPage";
 import QuoteListPage from "./pages/QuoteListPage";
 import QuoteFormPage from "./pages/QuoteFormPage";
 import QuoteDetailsPage from "./pages/QuoteDetailsPage";
+import SupportPage from "./pages/SupportPage";
 import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
 
@@ -33,6 +34,7 @@ const App = () => {
             <Route path="/quotes/new" element={<QuoteFormPage />} />
             <Route path="/quotes/:id" element={<QuoteDetailsPage />} />
             <Route path="/quotes/:id/edit" element={<QuoteFormPage />} />
+            <Route path="/support" element={<SupportPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

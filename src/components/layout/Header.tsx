@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
-import { Home, List, PlusCircle } from 'lucide-react';
+import { Home, List, PlusCircle, LifeBuoy } from 'lucide-react';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,6 +34,10 @@ export default function Header() {
             <Link to="/quotes/new" className="flex items-center text-insurance-black-light hover:text-black">
               <PlusCircle className="h-4 w-4 mr-1" />
               <span>New Quote</span>
+            </Link>
+            <Link to="/support" className="flex items-center text-insurance-black-light hover:text-black">
+              <LifeBuoy className="h-4 w-4 mr-1" />
+              <span>Support</span>
             </Link>
           </div>
           
@@ -82,6 +86,14 @@ export default function Header() {
               >
                 <PlusCircle className="h-5 w-5 mr-2" />
                 <span>New Quote</span>
+              </Link>
+              <Link 
+                to="/support" 
+                className="flex items-center px-2 py-2 text-insurance-black-light hover:bg-insurance-gray-light rounded-md"
+                onClick={() => setIsOpen(false)}
+              >
+                <LifeBuoy className="h-5 w-5 mr-2" />
+                <span>Support</span>
               </Link>
             </nav>
           </div>
