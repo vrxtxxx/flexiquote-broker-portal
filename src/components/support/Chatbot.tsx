@@ -14,7 +14,7 @@ type Message = {
 const initialMessages: Message[] = [
   {
     id: '1',
-    text: 'Hello! I'm your FlexiQuote assistant. How can I help you today with your insurance quotes or policy questions?',
+    text: "Hello! I'm your FlexiQuote assistant. How can I help you today with your insurance quotes or policy questions?",
     sender: 'bot',
     timestamp: new Date(),
   },
